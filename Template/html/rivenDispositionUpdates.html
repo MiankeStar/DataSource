@@ -6,18 +6,36 @@
     <style>
         .r-body td {
             margin: 0;
-            border-bottom: 2px solid firebrick;
+            border-bottom: 2px solid #6fbce5;
         }
+
+        .r-red {
+            color: red;
+        }
+
+        .r-green {
+            color: green;
+        }
+
         /*名称样式*/
-        .r-w{}
+        .r-w {
+        }
+
         /*旧的字符样式*/
-        .r-o {}
+        .r-o {
+        }
+
         /*旧的数字样式*/
-        .r-o-n {}
+        .r-o-n {
+        }
+
         /*新的字符样式*/
-        .r-n {}
+        .r-n {
+        }
+
         /*新的数字样式*/
-        .r-n-n{}
+        .r-n-n {
+        }
     </style>
 </head>
 <body>
@@ -27,6 +45,7 @@
         <span style="font-size: 24px; font-weight: bold">紫卡倾向更新列表</span>
         <div id="head" style="text-align: left; font-weight: bold">
             本次更新日期： <span th:text="${data[0].isDate}"></span>
+            <p><span class="r-green">绿色为加强</span> | <span class="r-red">红色为削弱</span></p>
         </div>
         <hr/>
         <div>
@@ -50,7 +69,8 @@
                         新的倾向数值
                     </td>
                 </tr>
-                <tr class="r-body" th:each="r:${data}">
+                <tr class="r-body" th:each="r:${data}"
+                    th:class="${r.oldNum >= r.newNum ? 'r-body r-red' : 'r-body r-green'}">
                     <td class="r-w" th:text="${r.traCh}">
                         1
                     </td>
