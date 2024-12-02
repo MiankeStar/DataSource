@@ -75,6 +75,7 @@
                 <div class="sys-info">
                     <div th:text="'操作系统：'+${info.sysInfo.osName}"></div>
                     <div th:text="'系统架构：'+${info.sysInfo.osArch}"></div>
+                    <div th:text="'NyxBot当前版本：'+${info.jarVersion}"></div>
                 </div>
             </td>
 
@@ -82,17 +83,27 @@
     </table>
     <table class="sys-file-info">
         <tr>
-            <td th:colspan="${#arrays.length(info.sysFileInfo)}" style="font-size: 2em">硬盘</td>
+            <td th:colspan="${#lists.size(info.sysFileInfo)}" style="font-size: 2em">硬盘</td>
         </tr>
-        <tr>
-            <td th:each="file:${info.sysFileInfo}">
-                <div th:text="'文件类型：'+${file.typeName}"></div>
-                <div th:text="'总大小：'+${file.total}"></div>
-                <div th:text="'剩余大小：'+${file.free}"></div>
-                <div th:text="'已经使用量：'+${file.used}"></div>
+        <!-- 使用一个外部迭代器来创建行 -->
+        <tr th:each="row, rowStat:${#numbers.sequence(0, #lists.size(info.sysFileInfo) - 1, 2)}">
+            <!-- 第一个td -->
+            <td>
+                <div th:text="'文件类型：'+${info.sysFileInfo[row].typeName}"></div>
+                <div th:text="'总大小：'+${info.sysFileInfo[row].total}"></div>
+                <div th:text="'剩余大小：'+${info.sysFileInfo[row].free}"></div>
+                <div th:text="'已经使用量：'+${info.sysFileInfo[row].used}"></div>
+            </td>
+            <!-- 第二个td，如果存在的话 -->
+            <td th:if="${row + 1 < #lists.size(info.sysFileInfo)}">
+                <div th:text="'文件类型：'+${info.sysFileInfo[row + 1].typeName}"></div>
+                <div th:text="'总大小：'+${info.sysFileInfo[row + 1].total}"></div>
+                <div th:text="'剩余大小：'+${info.sysFileInfo[row + 1].free}"></div>
+                <div th:text="'已经使用量：'+${info.sysFileInfo[row + 1].used}"></div>
             </td>
         </tr>
     </table>
+
 </div>
 </body>
 </html>
