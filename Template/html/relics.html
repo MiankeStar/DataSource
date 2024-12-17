@@ -1,76 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<meta charset="UTF-8" />
-		<title>遗物</title>
-		<link th:href="@{/css/index.css}" rel="stylesheet" />
-	</head>
+<head>
+	<meta charset="UTF-8"/>
+	<title>遗物</title>
+	<link th:href="@{/css/index.css}" rel="stylesheet"/>
+</head>
 
-	<body>
-		<!--
-   生成图片的宽度
+<body>
+<!--
+生成图片的宽度
 -->
-		<w>
-			3072
-		</w>
-		<div>
-			<div class="card">
-				<div class="relics-backcolor">
-					<div th:if="${rs} != '0'">
-						<table class="table-css syndicate relics-color"
-						th:with="colSize=${4}, rowSize=${rs.size()/colSize}, rowSize=${(rs.size()%colSize==0 ? rowSize : (rowSize+1))}">
-							<tr 
-								th:if="${rs.size() gt 0}" 
-								th:each="rowIdx:${#numbers.sequence(1, rowSize)}">
-								
-								<td 
-									th:each="colIdx:${#numbers.sequence(1,colSize)}">
-									
-									<th:block th:with="idx=${(rowIdx-1)*colSize+colIdx-1},relics=${idx < rs.size() ? rs[idx] : null}">
-													
-													<table class="relics" th:if="${relics ne null}">
-														<caption about="top" th:classappend="'relics-'+${relics.relicsTier}"
-															th:text="'['+${relics.relicsTierD}+' '+${relics.relicsName}+'遗物]'"></caption>
-														<tr th:each="item:${relics.items}">
-															<td th:text="${item}"></td>
-														</tr>
-													</table>
-									</th:block>
-									
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div th:if="${wrs} != 0">
-						<table class="table-css syndicate relics-color"
-						th:with="colSize=${4}, rowSize=${wrs.size()/colSize}, rowSize=${(wrs.size()%colSize==0 ? rowSize : (rowSize+1))}">
-							<tr 
-								th:if="${wrs.size() gt 0}" 
-								th:each="rowIdx:${#numbers.sequence(1, rowSize)}">
-								
-								<td 
-									th:each="colIdx:${#numbers.sequence(1,colSize)}">
-									
-									<th:block th:with="idx=${(rowIdx-1)*colSize+colIdx-1},relics=${idx < wrs.size() ? wrs[idx] : null}">
-													
-													<table class="relics" th:if="${relics ne null}">
-														<caption about="top" th:classappend="'relics-'+${relics.relicsTier}"
-															th:text="'['+${relics.relicsTierD}+' '+${relics.relicsName}+'遗物]'"></caption>
-														<tr th:each="item:${relics.items}">
-															<td th:text="${item}"></td>
-														</tr>
-													</table>
-									</th:block>
-									
-								</td>
-							</tr>
-						</table>
-					</div>
-
-				</div>
+<w>
+	3072
+</w>
+<div>
+	<div class="card">
+		<div class="relics-backcolor">
+			<div th:if="${rs} != '0'">
+				<table class="table-css syndicate relics-color"
+					   th:with="colSize=${4}, rowSize=${rs.size()/colSize}, rowSize=${(rs.size()%colSize==0 ? rowSize : (rowSize+1))}">
+					<tr th:each="rowIdx:${#numbers.sequence(0, rowSize-1)}">
+						<td th:each="colIdx:${#numbers.sequence(0, colSize-1)}"
+							th:with="idx=${rowIdx * colSize + colIdx}">
+							<th:block th:if="${idx lt rs.size()}">
+								<table class="relics">
+									<caption about="top" th:style="${rs[idx].tier} == '后纪' ? 'color: #ece175;' : (${rs[idx].tier} == '中纪' ? 'color: #d1d0d1;' : (${rs[idx].tier} == '古纪' ? 'color: #bd9177;' : (${rs[idx].tier} == '前纪' ? 'color: #A49C75;' : 'color: #811111')))"
+											 th:text="'['+${rs[idx].tier}+' '+${rs[idx].relicName}+' 遗物]'"></caption>
+									<tr th:each="reward:${rs[idx].rewards}">
+										<td th:style="${reward.chance} == 2 ? 'background-color: #ece175;' : (${reward.chance} == 11 ? 'background-color: #d1d0d1;' : (${reward.chance} == 25 ? 'background-color: #bd9177;' : ''))"
+											th:text="${reward.itemName} + ' (' + ${reward.rarity} + ', ' + ${reward.chance} + '%)'"></td>
+									</tr>
+								</table>
+							</th:block>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
-	</body>
+	</div>
+
+</div>
+
+
+</body>
 
 </html>
